@@ -1,0 +1,17 @@
+{
+  "name": "01-node",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "nodemon bash.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "request": "^2.88.2"
+  }
+}
