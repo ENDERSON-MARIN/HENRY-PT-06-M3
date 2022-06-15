@@ -1,24 +1,72 @@
-var http = require('http');
-var fs   = require('fs');
+// var http = require("http");//para importar desde commonjs
+// var fs = require("fs");
 
-var beatles=[{
-  name: "John Lennon",
-  birthdate: "09/10/1940",
-  profilePic:"https://blogs.correiobraziliense.com.br/trilhasonora/wp-content/uploads/sites/39/2020/10/CBNFOT081020100047-550x549.jpg"
-},
-{
-  name: "Paul McCartney",
-  birthdate: "18/06/1942",
-  profilePic:"http://gazettereview.com/wp-content/uploads/2016/06/paul-mccartney.jpg"
-},
-{
-  name: "George Harrison",
-  birthdate: "25/02/1946",
-  profilePic:"https://canaldosbeatles.files.wordpress.com/2012/02/george-george-harrison-8321345-438-600.jpg"
-},
-{
-  name: "Richard Starkey",
-  birthdate: "07/08/1940",
-  profilePic:"http://cp91279.biography.com/BIO_Bio-Shorts_0_Ringo-Starr_SF_HD_768x432-16x9.jpg"
-}
-]
+import http from "http"; //para importar desde EC6, se debe agragar en el package.json => "type": "module",
+import fs from "fs";
+import beatles from "./data.js"; //para importar archivos externos en EC6 se debe colocar la extension del archivo.
+http
+  .createServer((req, res) => {
+    const { method, url } = req;
+    const pathArray = url.split("/"); //convierte la url en array separado por /
+
+    if (isGet() && url === "/") {
+      res.writeHead(200, {
+        "Content-Type": "text/html",
+      });
+
+      const html = fs.readFileSync("./index.html", "utf-8");
+
+      return res.end(html);
+    } else if (isGet() && pathArray.length === 2) {
+      const beatle = beatles.find(
+        //(beatle) => encodeURI(beatle.name) === pathArray[1]//con encodeURI
+        (beatle) => beatle.name === decodeURI(pathArray[1]) //con decodeURI
+      );
+
+      if (beatle) {
+        //console.log(beatle);
+        res.writeHead(200, {
+          "Content-Type": "text/html",
+        });
+
+        const html = fs
+          .readFileSync("./beatle.html", "utf-8")
+          .replaceAll("{name}", beatle.name)
+          .replaceAll("{birthdate}", beatle.birthdate)
+          .replaceAll("{profilePic}", beatle.profilePic);
+
+        return res.end(html);
+      }
+    } else if (isGet() && url === "/api") {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      return res.end(JSON.stringify(beatles));
+    } else if (isGet() && pathArray.length === 3 && pathArray[1] === "api") {
+      const beatle = beatles.find(
+        //(beatle) => encodeURI(beatle.name) === pathArray[2]//con encodeURI
+        (beatle) => beatle.name === decodeURI(pathArray[2]) //con decodeURI
+      );
+
+      if (beatle) {
+        //console.log(beatle);
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        return res.end(JSON.stringify(beatle));
+      }
+    }
+
+    console.log(pathArray);
+
+    res.writeHead(404, {
+      "Content-Type": "text/html",
+    });
+
+    res.end("<h1>Url Not Found!...</h1>");
+
+    function isGet() {
+      return method === "GET";
+    }
+  })
+  .listen(3000);
