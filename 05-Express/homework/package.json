@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest tests",
     "test:watch": "npm test -- --watch",
-    "nodemon": "nodemon src/app.js",
+    "start": "nodemon src/app.js",
     "grade": "jest --detectOpenHandles --forceExit --useStderr --json --outputFile=./tests/result.json"
   },
   "license": "ISC",

@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHTTP = require('chai-http');
 
-const server = require('../src/server.js');
+const server = require('../src/server_OLD.js');
 
 const STATUS_OK = 200;
 const STATUS_NOT_FOUND = 404;
