@@ -88,6 +88,29 @@ routerUsers.put("/:id/enable", (req, res) => {
   }
 });
 
+routerUsers.get("/:id", (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = model.getUser(id);
+    res.status(200).json(user);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+routerUsers.get("/", (req, res) => {
+  try {
+    const user = model.getAllUsers();
+    res.status(200).json(user);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
 module.exports = {
   routerUsers,
   routerTodos,
