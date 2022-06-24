@@ -106,7 +106,7 @@ function getUser(idOrEmail, extended) {
     throw new Error("User not found");
   }
 
-  if(extended) {
+  if (extended) {
     user.todos = getTodosByUser(user.id);
   }
 
@@ -204,6 +204,10 @@ function getTodosByUser(idOrEmail, search) {
   return todosByUser;
 }
 
+function getAllTodos() {
+  return todos;
+}
+
 module.exports = {
   createUser,
   updateUser,
@@ -215,4 +219,5 @@ module.exports = {
   completeTodo,
   completeAllUserTodos,
   getTodosByUser,
+  getAllTodos,
 };
