@@ -8,7 +8,7 @@ const routerTodos = express.Router();
 
 function validateCreateUser(req, res, next) {
   const { name, lastName, email } = req.body;
-  console.log(req.body);
+  //console.log(req.body);
   if (
     typeof name !== "string" ||
     typeof lastName !== "string" ||
@@ -37,7 +37,32 @@ routerUsers.post("/", validateCreateUser, (req, res) => {
   }
 });
 
+routerUsers.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const { name, lastName } = req.body;
 
+  try {
+    const user = model.updateUser(id, { name, lastName });
+    res.status(200).json(user);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+routerUsers.put("/", (req, res) => {
+  const { email, name, lastName } = req.body;
+
+  try {
+    const user = model.updateUser(email, { name, lastName });
+    res.status(200).json(user);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
 
 module.exports = {
   routerUsers,
