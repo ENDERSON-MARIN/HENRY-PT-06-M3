@@ -197,3 +197,16 @@ function getTodosByUser(idOrEmail, search) {
 
   return todosByUser;
 }
+
+module.exports = {
+  createUser,
+  updateUser,
+  disableUser,
+  enableUser,
+  getUser,
+  getAllUsers,
+  createTodo,
+  completeTodo,
+  completeAllUserTodos,
+  getTodosByUser,
+};
