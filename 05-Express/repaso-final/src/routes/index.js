@@ -64,6 +64,30 @@ routerUsers.put("/", (req, res) => {
   }
 });
 
+routerUsers.put("/:id/disable", (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = model.disableUser(id);
+    res.status(200).json(user);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+routerUsers.put("/:id/enable", (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = model.enableUser(id);
+    res.status(200).json(user);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
 module.exports = {
   routerUsers,
   routerTodos,
