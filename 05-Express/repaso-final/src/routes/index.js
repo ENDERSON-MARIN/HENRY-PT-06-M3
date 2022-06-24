@@ -42,7 +42,7 @@ routerUsers.put("/:id", (req, res) => {
   const { name, lastName } = req.body;
 
   try {
-    const user = model.updateUser(id, { name, lastName });
+    const user = model.updateUser(Number(id), { name, lastName });
     res.status(200).json(user);
   } catch (error) {
     return res.status(400).json({
@@ -67,7 +67,7 @@ routerUsers.put("/", (req, res) => {
 routerUsers.put("/:id/disable", (req, res) => {
   const { id } = req.params;
   try {
-    const user = model.disableUser(id);
+    const user = model.disableUser(Number(id));
     res.status(200).json(user);
   } catch (error) {
     return res.status(400).json({
@@ -79,7 +79,7 @@ routerUsers.put("/:id/disable", (req, res) => {
 routerUsers.put("/:id/enable", (req, res) => {
   const { id } = req.params;
   try {
-    const user = model.enableUser(id);
+    const user = model.enableUser(Number(id));
     res.status(200).json(user);
   } catch (error) {
     return res.status(400).json({
@@ -89,15 +89,16 @@ routerUsers.put("/:id/enable", (req, res) => {
 });
 
 routerUsers.get("/:id", (req, res) => {
-  const { id } = req.params;
-  try {
-    const user = model.getUser(id);
-    res.status(200).json(user);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
+    const { id } = req.params;
+    const { extended } = req.query;
+    try {
+      const user = model.getUser(Number(id), extended);
+      res.status(200).json(user);
+    } catch (error) {
+      return res.status(400).json({
+        error: error.message,
+      });
+    }
 });
 
 routerUsers.get("/", (req, res) => {

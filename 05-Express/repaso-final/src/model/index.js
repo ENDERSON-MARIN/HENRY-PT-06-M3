@@ -94,6 +94,8 @@ function enableUser(idOrEmail) {
 }
 
 function getUser(idOrEmail, extended) {
+  extended = extended === "true";
+
   const user = users.find(
     (user) =>
       user.id === idOrEmail ||
@@ -101,7 +103,11 @@ function getUser(idOrEmail, extended) {
   );
 
   if (!user) {
-    throw new Error("User not found!");
+    throw new Error("User not found");
+  }
+
+  if(extended) {
+    user.todos = getTodosByUser(user.id);
   }
 
   return user;
